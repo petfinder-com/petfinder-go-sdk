@@ -1,0 +1,14 @@
+stages:
+- verify
+
+unit:
+  stage: verify
+  tags:
+    - k8s
+  image:
+    name: golang:1.11.4
+    entrypoint: [""]
+  script:
+    - make test
+  except:
+    - tags
