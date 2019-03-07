@@ -35,7 +35,7 @@ func url() string {
 func NewClient(accessToken string, secretAccessToken string) (Client, error) {
 	//New attempt
 	url := url()
-	fmt.Println(url)
+
 	conf := &clientcredentials.Config{
 		ClientID:     accessToken,
 		ClientSecret: secretAccessToken,
