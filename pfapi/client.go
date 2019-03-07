@@ -13,25 +13,30 @@ import (
 
 const BASE_URL = "https://api-qa.petfinder.com/v2"
 
-type PfApiClient struct {
+//Client struct is used to hold http.Client
+type Client struct {
 	*http.Client
 }
 
-func NewClient(access_token string, secret_access_token string) (PfApiClient, error) {
+//NewClient accepts client id and secret client id issued by Petfinder
+//It returns a struct callled Client that contains a pointer to http.Client
+func NewClient(accessToken string, secretAccessToken string) (Client, error) {
 	//New attempt
 	conf := &clientcredentials.Config{
-		ClientID:     access_token,
-		ClientSecret: secret_access_token,
+		ClientID:     accessToken,
+		ClientSecret: secretAccessToken,
 		Scopes:       []string{},
 		TokenURL:     "https://api-qa.petfinder.com/v2/oauth2/token/",
 	}
 
 	client := conf.Client(oauth2.NoContext)
 
-	return PfApiClient{client}, nil
+	return Client{client}, nil
 }
 
-func (c PfApiClient) GetAllTypes() ([]AnimalType, error) {
+//GetAllTypes function is a method of Client
+//It returns a struct of animals types and error
+func (c Client) GetAllTypes() ([]AnimalType, error) {
 	url := fmt.Sprintf("%s/types", BASE_URL)
 	response, err := c.Get(url)
 	if err != nil {
