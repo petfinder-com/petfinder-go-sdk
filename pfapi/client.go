@@ -43,6 +43,16 @@ func (c Client) httpGet(url string) ([]byte, error) {
 	return body, nil
 }
 
+//sendRequest is a private function accepting a path as a variable
+//It combines url + path to create the request and sends the request
+func (c Client) sendGetRequest(path string) ([]byte, error) {
+	url := fmt.Sprintf("%s%s", url(), path)
+
+	body, err := c.httpGet(url)
+
+	return body, err
+}
+
 //NewClient accepts client id and secret client id issued by Petfinder
 //It returns a struct callled Client that contains a pointer to http.Client
 func NewClient(accessToken string, secretAccessToken string) (Client, error) {
@@ -61,19 +71,10 @@ func NewClient(accessToken string, secretAccessToken string) (Client, error) {
 	return Client{client}, nil
 }
 
-//sendRequest is a private function accepting a path as a variable
-//It combines url + path to create the request and sends the request
-func (c Client) sendRequest(path string) ([]byte, error) {
-	url := fmt.Sprintf("%s%s", url(), path)
-	body, err := c.httpGet(url)
-
-	return body, err
-}
-
 //GetAllTypes function is a method of Client
 //It returns a struct of animals types and error
 func (c Client) GetAllTypes() ([]AnimalType, error) {
-	body, err := c.sendRequest("/types")
+	body, err := c.sendGetRequest("/types")
 
 	var animalTypes []AnimalType
 	var message interface{}
@@ -95,7 +96,7 @@ func (c Client) GetAllTypes() ([]AnimalType, error) {
 //GetType takes a string of the type name (dog, cat, etc) and returns
 //an AnimalType struct and error.
 func (c Client) GetType(reqType string) (AnimalType, error) {
-	body, err := c.sendRequest("/types/" + reqType)
+	body, err := c.sendGetRequest("/types/" + reqType)
 
 	var animalType AnimalType
 	var message interface{}
