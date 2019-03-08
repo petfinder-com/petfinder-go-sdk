@@ -34,4 +34,11 @@ func main() {
 		fmt.Println("Colors: ", t.Colors)
 		fmt.Println("Self Link: ", t.Links.Self.Href)
 	}
+
+	//Get a specific type
+	myType, err := pfclient.GetType("dog")
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(myType.Name)
 }
