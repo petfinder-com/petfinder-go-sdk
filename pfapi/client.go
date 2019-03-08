@@ -43,6 +43,16 @@ func (c Client) httpGet(url string) ([]byte, error) {
 	return body, nil
 }
 
+//sendRequest is a private function accepting a path as a variable
+//It combines url + path to create the request and sends the request
+func (c Client) sendGetRequest(path string) ([]byte, error) {
+	url := fmt.Sprintf("%s%s", url(), path)
+
+	body, err := c.httpGet(url)
+
+	return body, err
+}
+
 //NewClient accepts client id and secret client id issued by Petfinder
 //It returns a struct callled Client that contains a pointer to http.Client
 func NewClient(accessToken string, secretAccessToken string) (Client, error) {
@@ -64,8 +74,7 @@ func NewClient(accessToken string, secretAccessToken string) (Client, error) {
 //GetAllTypes function is a method of Client
 //It returns a struct of animals types and error
 func (c Client) GetAllTypes() ([]AnimalType, error) {
-	url := fmt.Sprintf("%s/types", url())
-	body, err := c.httpGet(url)
+	body, err := c.sendGetRequest("/types")
 
 	var animalTypes []AnimalType
 	var message interface{}
@@ -81,41 +90,13 @@ func (c Client) GetAllTypes() ([]AnimalType, error) {
 		return nil, err
 	}
 
-	// for _, at := range typesMap {
-	// 	var animal AnimalType
-	// 	at := at.(map[string]interface{})
-	// 	err := mapstructure.Decode(at, &animal)
-	// 	if err != nil {
-	// 		fmt.Println(err)
-	// 	}
-	// 	animalTypes = append(animalTypes, animal)
-	// }
-
-	// messageMap := message.(map[string]interface{})
-	// typesMap := messageMap["types"].([]interface{})
-	// //fmt.Println(typeField["types"])
-
-	// for _, at := range typesMap {
-	// 	a := AnimalType{}
-	// 	at := at.(map[string]interface{})
-	// 	a.Name = at["name"].(string)
-	// 	a.Colors = at["colors"].([]string)
-	// 	fmt.Println(a)
-	// 	animalTypes = append(animalTypes, a)
-	// }
-
-	// var animalTypes []AnimalType
-	// json.Unmarshal(messageMap["types"].([]byte), &animalTypes)
-	// fmt.Println(animalTypes)
-
 	return animalTypes, nil
 }
 
 //GetType takes a string of the type name (dog, cat, etc) and returns
 //an AnimalType struct and error.
 func (c Client) GetType(reqType string) (AnimalType, error) {
-	url := fmt.Sprintf("%s/types/%s", url(), reqType)
-	body, err := c.httpGet(url)
+	body, err := c.sendGetRequest("/types/" + reqType)
 
 	var animalType AnimalType
 	var message interface{}
