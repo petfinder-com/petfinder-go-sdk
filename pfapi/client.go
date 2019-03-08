@@ -30,6 +30,19 @@ func url() string {
 	return DefaultBaseURL
 }
 
+func (c Client) httpGet(url string) ([]byte, error) {
+	response, err := c.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	defer response.Body.Close()
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return nil, err
+	}
+	return body, nil
+}
+
 //NewClient accepts client id and secret client id issued by Petfinder
 //It returns a struct callled Client that contains a pointer to http.Client
 func NewClient(accessToken string, secretAccessToken string) (Client, error) {
@@ -52,22 +65,20 @@ func NewClient(accessToken string, secretAccessToken string) (Client, error) {
 //It returns a struct of animals types and error
 func (c Client) GetAllTypes() ([]AnimalType, error) {
 	url := fmt.Sprintf("%s/types", url())
-	response, err := c.Get(url)
-	if err != nil {
-		fmt.Println(err)
-	}
-	defer response.Body.Close()
-	body, err := ioutil.ReadAll(response.Body)
+	body, err := c.httpGet(url)
 
 	var animalTypes []AnimalType
 	var message interface{}
-	json.Unmarshal(body, &message)
+	err = json.Unmarshal(body, &message)
+	if err != nil {
+		return nil, err
+	}
 	messageMap := message.(map[string]interface{})
 	typesMap := messageMap["types"].([]interface{})
 
 	err = mapstructure.Decode(typesMap, &animalTypes)
 	if err != nil {
-		fmt.Println("OH NO: ", err)
+		return nil, err
 	}
 
 	// for _, at := range typesMap {
