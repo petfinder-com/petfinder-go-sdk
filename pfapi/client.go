@@ -110,3 +110,26 @@ func (c Client) GetAllTypes() ([]AnimalType, error) {
 
 	return animalTypes, nil
 }
+
+//GetType takes a string of the type name (dog, cat, etc) and returns
+//an AnimalType struct and error.
+func (c Client) GetType(reqType string) (AnimalType, error) {
+	url := fmt.Sprintf("%s/types/%s", url(), reqType)
+	body, err := c.httpGet(url)
+
+	var animalType AnimalType
+	var message interface{}
+	err = json.Unmarshal(body, &message)
+	if err != nil {
+		return AnimalType{}, err
+	}
+	messageMap := message.(map[string]interface{})
+	typesMap := messageMap["type"].(map[string]interface{})
+
+	err = mapstructure.Decode(typesMap, &animalType)
+	if err != nil {
+		return AnimalType{}, err
+	}
+
+	return animalType, nil
+}
