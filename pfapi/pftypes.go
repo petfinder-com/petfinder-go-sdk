@@ -1,5 +1,7 @@
 package pfapi
 
+import "fmt"
+
 type AnimalType struct {
 	Name    string
 	Coats   []string
@@ -18,12 +20,12 @@ type Link struct {
 }
 
 type AnimalResponse struct {
-	Animals        []Animal
-	PaginationData Pagination
+	Animals    []Animal
+	Pagination Pagination
 }
 
 type Animal struct {
-	ID             string
+	ID             int
 	OrganizationID string
 	URL            string
 	Type           string
@@ -40,15 +42,15 @@ type Animal struct {
 	Status         string
 	Attributes     Attribute
 	Environment    Environment
-	tags           []string
-	contact        Contact
+	Tags           []string
+	Contact        Contact
 }
 
 type Breeds struct {
 	Primary   string
 	Secondary string
-	Mixed     string
-	Unknown   string
+	Mixed     bool
+	Unknown   bool
 }
 
 type Colors struct {
@@ -65,11 +67,11 @@ type Photo struct {
 }
 
 type Attribute struct {
-	SpayedNeutered bool
-	HouseTrainied  bool
+	SpayedNeutered bool `mapstructure:"spayed_neutered"`
+	HouseTrainied  bool `mapstructure:"house_trained"`
 	Declawed       bool
-	SpecialNeeds   bool
-	ShotsCurrent   bool
+	SpecialNeeds   bool `mapstructure:"special_needs"`
+	ShotsCurrent   bool `mapstructure:"shots_current"`
 }
 
 type Environment struct {
@@ -93,14 +95,32 @@ type Address struct {
 }
 
 type Pagination struct {
-	CountPerPage int
-	TotalCount   int
-	CurrentPage  int
-	TotalPages   int
+	CountPerPage int `mapstructure:"count_per_page"`
+	TotalCount   int `mapstructure:"total_count"`
+	CurrentPage  int `mapstructure:"current_page"`
+	TotalPages   int `mapstructure:"total_pages"`
 }
 
 type AnimalLinks struct {
 	Self         Link
 	Type         Link
 	Organization Link
+}
+
+type PetSearchParams map[string]string
+
+func (p PetSearchParams) CreateQueryString() string {
+	paramString := "?"
+	for paramKey, paramValue := range p {
+		paramString += fmt.Sprintf("%s=%s&", paramKey, paramValue)
+	}
+	return paramString
+}
+
+func (p PetSearchParams) AddParam(key string, value string) {
+	p[key] = p[value]
+}
+
+func NewPetSearchParams() PetSearchParams {
+	return PetSearchParams{}
 }

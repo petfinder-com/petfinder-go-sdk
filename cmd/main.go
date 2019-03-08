@@ -28,7 +28,7 @@ func main() {
 	//Retreive all animal types, put into struct
 	types, _ = pfclient.GetAllTypes()
 
-	//Interate through animal types using struct data
+	//Iterate through animal types using struct data
 	for _, t := range types {
 		fmt.Println("Name: ", t.Name)
 		fmt.Println("Colors: ", t.Colors)
@@ -41,4 +41,25 @@ func main() {
 		fmt.Println(err)
 	}
 	fmt.Println(myType.Name)
+
+	//Get a particular animal by id
+	myAnimal, err := pfclient.GetAnimalById("39140238")
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(myAnimal.ID, myAnimal.Species, myAnimal.Breeds)
+
+	myParams := pfapi.NewPetSearchParams()
+	myParams.AddParam("type", "Dog")
+	myParams.AddParam("coat", "Medium")
+
+	myAnimals, err := pfclient.GetAnimals(myParams)
+	if err != nil {
+		fmt.Println(err)
+	}
+	for _, a := range myAnimals.Animals {
+		fmt.Println(a.Name)
+		fmt.Println(a.Photos)
+	}
+	fmt.Println(myAnimals.Pagination.TotalCount)
 }
