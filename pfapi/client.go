@@ -81,33 +81,6 @@ func (c Client) GetAllTypes() ([]AnimalType, error) {
 		return nil, err
 	}
 
-	// for _, at := range typesMap {
-	// 	var animal AnimalType
-	// 	at := at.(map[string]interface{})
-	// 	err := mapstructure.Decode(at, &animal)
-	// 	if err != nil {
-	// 		fmt.Println(err)
-	// 	}
-	// 	animalTypes = append(animalTypes, animal)
-	// }
-
-	// messageMap := message.(map[string]interface{})
-	// typesMap := messageMap["types"].([]interface{})
-	// //fmt.Println(typeField["types"])
-
-	// for _, at := range typesMap {
-	// 	a := AnimalType{}
-	// 	at := at.(map[string]interface{})
-	// 	a.Name = at["name"].(string)
-	// 	a.Colors = at["colors"].([]string)
-	// 	fmt.Println(a)
-	// 	animalTypes = append(animalTypes, a)
-	// }
-
-	// var animalTypes []AnimalType
-	// json.Unmarshal(messageMap["types"].([]byte), &animalTypes)
-	// fmt.Println(animalTypes)
-
 	return animalTypes, nil
 }
 
