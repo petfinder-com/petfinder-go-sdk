@@ -114,3 +114,48 @@ func (c Client) GetType(reqType string) (AnimalType, error) {
 
 	return animalType, nil
 }
+
+//GetAnimal takes a string of the type id (1234134) and returns
+//an Animal struct and error.
+func (c Client) GetAnimalById(animalID string) (Animal, error) {
+	body, err := c.sendGetRequest("/animals/" + animalID)
+	if err != nil {
+		return Animal{}, err
+	}
+	var animal Animal
+	var message interface{}
+
+	err = json.Unmarshal(body, &message)
+	if err != nil {
+		return Animal{}, err
+	}
+	messageMap := message.(map[string]interface{})
+	animalMap := messageMap["animal"].(map[string]interface{})
+
+	err = mapstructure.Decode(animalMap, &animal)
+	if err != nil {
+		return Animal{}, err
+	}
+
+	return animal, nil
+}
+
+func (c Client) GetAnimals(params PetSearchParams) (AnimalResponse, error) {
+	paramString := params.CreateQueryString()
+	url := fmt.Sprintf("/animals%s", paramString)
+	body, err := c.sendGetRequest(url)
+
+	var animals AnimalResponse
+	var message interface{}
+
+	err = json.Unmarshal(body, &message)
+	if err != nil {
+		return AnimalResponse{}, err
+	}
+	messageMap := message.(map[string]interface{})
+	err = mapstructure.Decode(messageMap, &animals)
+	if err != nil {
+		return AnimalResponse{}, err
+	}
+	return animals, nil
+}
