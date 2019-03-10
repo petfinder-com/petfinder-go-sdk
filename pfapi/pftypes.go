@@ -24,6 +24,11 @@ type AnimalResponse struct {
 	Pagination Pagination
 }
 
+type OrganizationResponse struct {
+	Animals    []Organization
+	Pagination Pagination
+}
+
 type Animal struct {
 	ID             int
 	OrganizationID string
@@ -132,14 +137,32 @@ type Organization struct {
 	Email            string
 	Phone            string
 	Address          Address
-	Hours            []string
+	Hours            Hours
 	URL              string
 	WebSite          string
 	MissionStatement string
 	AdoptionPolicy   AdoptionPolicy
-	SocialMedia      []string
+	SocialMedia      SocialMedia `mapstructure:"social_media"`
 	Photo            []Photo
-	Links            OrganizationLinks
+	Links            OrganizationLinks `mapstructure:"_links"`
+}
+
+type Hours struct {
+	Monday    string
+	Tuesday   string
+	Wednesday string
+	Thursday  string
+	Friday    string
+	Saturday  string
+	Sunday    string
+}
+
+type SocialMedia struct {
+	Facebook  string
+	Twitter   string
+	Youtube   string
+	Instagram string
+	Pinterest string
 }
 
 type OrganizationLinks struct {
