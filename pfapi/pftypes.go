@@ -99,6 +99,7 @@ type Pagination struct {
 	TotalCount   int `mapstructure:"total_count"`
 	CurrentPage  int `mapstructure:"current_page"`
 	TotalPages   int `mapstructure:"total_pages"`
+	Links
 }
 
 type AnimalLinks struct {
@@ -123,4 +124,30 @@ func (p PetSearchParams) AddParam(key string, value string) {
 
 func NewPetSearchParams() PetSearchParams {
 	return PetSearchParams{}
+}
+
+type Organization struct {
+	ID               int
+	Name             string
+	Email            string
+	Phone            string
+	Address          Address
+	Hours            []string
+	URL              string
+	WebSite          string
+	MissionStatement string
+	AdoptionPolicy   AdoptionPolicy
+	SocialMedia      []string
+	Photo            []Photo
+	Links            OrganizationLinks
+}
+
+type OrganizationLinks struct {
+	Self    Link
+	Animals Link
+}
+
+type AdoptionPolicy struct {
+	Policy string
+	URL    string
 }
