@@ -69,7 +69,18 @@ func main() {
 		fmt.Println(err)
 	}
 	for _, a := range myOrgs.Organizations {
-		fmt.Println("Org Name: " + a.Name)
+		fmt.Println("Org Name: " + a.ID)
 	}
 	fmt.Println(myOrgs.Pagination.TotalCount)
+
+	//Orgs By ID
+	myOrg, err := pfclient.GetOrganizationsByID("NJ333")
+	if err != nil {
+		fmt.Println(err)
+	}
+	//for _, a := range myOrgs.Organizations {
+	//		fmt.Println(a)
+	//	}
+	fmt.Println("Org filter:")
+	fmt.Println(myOrg)
 }

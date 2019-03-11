@@ -186,3 +186,29 @@ func (c Client) GetOrganizations() (OrganizationResponse, error) {
 	}
 	return orgs, nil
 }
+
+//GetOrganizationsByID takes a string ID
+//It returns a hash of organizations or error
+func (c Client) GetOrganizationsByID(organizationID string) (Organization, error) {
+	body, err := c.sendGetRequest("/organizations/" + organizationID)
+	if err != nil {
+		return Organization{}, err
+	}
+
+	var org Organization
+	var message interface{}
+
+	err = json.Unmarshal(body, &message)
+	if err != nil {
+		return Organization{}, err
+	}
+
+	messageMap := message.(map[string]interface{})
+	orgMap := messageMap["organization"].(map[string]interface{})
+
+	err = mapstructure.Decode(orgMap, &org)
+	if err != nil {
+		return Organization{}, err
+	}
+	return org, nil
+}
