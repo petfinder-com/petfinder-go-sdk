@@ -2,6 +2,9 @@ package pfapi
 
 import "fmt"
 
+/////////////////////////////////////////////
+//AnimalType types
+
 type AnimalType struct {
 	Name    string
 	Coats   []string
@@ -15,9 +18,8 @@ type TypeLinks struct {
 	Breeds Link
 }
 
-type Link struct {
-	Href string
-}
+/////////////////////////////////////////////
+//Animal types
 
 type AnimalResponse struct {
 	Animals    []Animal
@@ -79,6 +81,80 @@ type Environment struct {
 	Dogs     bool
 	cats     bool
 }
+
+type AnimalLinks struct {
+	Self         Link
+	Type         Link
+	Organization Link
+}
+
+/////////////////////////////////////////////
+//Organization types
+
+type OrganizationResponse struct {
+	Organizations []Organization
+	Pagination    Pagination
+}
+
+type Organization struct {
+	ID               string
+	Name             string
+	Email            string
+	Phone            string
+	Address          Address
+	Hours            Hours
+	URL              string
+	WebSite          string
+	MissionStatement string
+	AdoptionPolicy   AdoptionPolicy
+	SocialMedia      SocialMedia `mapstructure:"social_media"`
+	Photos           []Photo
+	Links            OrganizationLinks `mapstructure:"_links"`
+}
+
+type Hours struct {
+	Monday    string
+	Tuesday   string
+	Wednesday string
+	Thursday  string
+	Friday    string
+	Saturday  string
+	Sunday    string
+}
+
+type SocialMedia struct {
+	Facebook  string
+	Twitter   string
+	Youtube   string
+	Instagram string
+	Pinterest string
+}
+
+type OrganizationLinks struct {
+	Self    Link
+	Animals Link
+}
+
+type AdoptionPolicy struct {
+	Policy string
+	URL    string
+}
+
+/////////////////////////////////////////////
+//Shared types
+
+type Pagination struct {
+	CountPerPage int             `mapstructure:"count_per_page"`
+	TotalCount   int             `mapstructure:"total_count"`
+	CurrentPage  int             `mapstructure:"current_page"`
+	TotalPages   int             `mapstructure:"total_pages"`
+	Links        PaginationLinks `mapstructure:"_links"`
+}
+
+type PaginationLinks struct {
+	Next Link
+}
+
 type Contact struct {
 	Email   string
 	Phone   string
@@ -94,22 +170,13 @@ type Address struct {
 	Country  string
 }
 
-type Pagination struct {
-	CountPerPage int `mapstructure:"count_per_page"`
-	TotalCount   int `mapstructure:"total_count"`
-	CurrentPage  int `mapstructure:"current_page"`
-	TotalPages   int `mapstructure:"total_pages"`
+type Link struct {
+	Href string
 }
 
-type AnimalLinks struct {
-	Self         Link
-	Type         Link
-	Organization Link
-}
+type SearchParams map[string]string
 
-type PetSearchParams map[string]string
-
-func (p PetSearchParams) CreateQueryString() string {
+func (p SearchParams) CreateQueryString() string {
 	paramString := "?"
 	for paramKey, paramValue := range p {
 		paramString += fmt.Sprintf("%s=%s&", paramKey, paramValue)
@@ -117,10 +184,10 @@ func (p PetSearchParams) CreateQueryString() string {
 	return paramString
 }
 
-func (p PetSearchParams) AddParam(key string, value string) {
+func (p SearchParams) AddParam(key string, value string) {
 	p[key] = p[value]
 }
 
-func NewPetSearchParams() PetSearchParams {
-	return PetSearchParams{}
+func NewPetSearchParams() SearchParams {
+	return SearchParams{}
 }

@@ -62,4 +62,15 @@ func main() {
 		fmt.Println(a.Photos)
 	}
 	fmt.Println(myAnimals.Pagination.TotalCount)
+
+	//Orgs
+	/*myOrgs, err := pfclient.GetOrganizations()
+	if err != nil {
+		fmt.Println(err)
+	}
+	for _, a := range myOrgs.Organizations {
+		fmt.Println(a.Name)
+		fmt.Println(a.Photos)
+	}
+	fmt.Println(myOrgs.Pagination.TotalCount)*/
 }
