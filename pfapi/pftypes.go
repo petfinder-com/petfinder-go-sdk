@@ -2,6 +2,9 @@ package pfapi
 
 import "fmt"
 
+/////////////////////////////////////////////
+//AnimalType types
+
 type AnimalType struct {
 	Name    string
 	Coats   []string
@@ -15,17 +18,11 @@ type TypeLinks struct {
 	Breeds Link
 }
 
-type Link struct {
-	Href string
-}
+/////////////////////////////////////////////
+//Animal types
 
 type AnimalResponse struct {
 	Animals    []Animal
-	Pagination Pagination
-}
-
-type OrganizationResponse struct {
-	Animals    []Organization
 	Pagination Pagination
 }
 
@@ -84,28 +81,6 @@ type Environment struct {
 	Dogs     bool
 	cats     bool
 }
-type Contact struct {
-	Email   string
-	Phone   string
-	Address Address
-}
-
-type Address struct {
-	Address1 string
-	Address2 string
-	City     string
-	State    string
-	PostCode string
-	Country  string
-}
-
-type Pagination struct {
-	CountPerPage int `mapstructure:"count_per_page"`
-	TotalCount   int `mapstructure:"total_count"`
-	CurrentPage  int `mapstructure:"current_page"`
-	TotalPages   int `mapstructure:"total_pages"`
-	Links
-}
 
 type AnimalLinks struct {
 	Self         Link
@@ -113,26 +88,16 @@ type AnimalLinks struct {
 	Organization Link
 }
 
-type PetSearchParams map[string]string
+/////////////////////////////////////////////
+//Organization types
 
-func (p PetSearchParams) CreateQueryString() string {
-	paramString := "?"
-	for paramKey, paramValue := range p {
-		paramString += fmt.Sprintf("%s=%s&", paramKey, paramValue)
-	}
-	return paramString
-}
-
-func (p PetSearchParams) AddParam(key string, value string) {
-	p[key] = p[value]
-}
-
-func NewPetSearchParams() PetSearchParams {
-	return PetSearchParams{}
+type OrganizationResponse struct {
+	Organizations []Organization
+	Pagination    Pagination
 }
 
 type Organization struct {
-	ID               int
+	ID               string
 	Name             string
 	Email            string
 	Phone            string
@@ -143,7 +108,7 @@ type Organization struct {
 	MissionStatement string
 	AdoptionPolicy   AdoptionPolicy
 	SocialMedia      SocialMedia `mapstructure:"social_media"`
-	Photo            []Photo
+	Photos           []Photo
 	Links            OrganizationLinks `mapstructure:"_links"`
 }
 
@@ -173,4 +138,56 @@ type OrganizationLinks struct {
 type AdoptionPolicy struct {
 	Policy string
 	URL    string
+}
+
+/////////////////////////////////////////////
+//Shared types
+
+type Pagination struct {
+	CountPerPage int             `mapstructure:"count_per_page"`
+	TotalCount   int             `mapstructure:"total_count"`
+	CurrentPage  int             `mapstructure:"current_page"`
+	TotalPages   int             `mapstructure:"total_pages"`
+	Links        PaginationLinks `mapstructure:"_links"`
+}
+
+type PaginationLinks struct {
+	Next Link
+}
+
+type Contact struct {
+	Email   string
+	Phone   string
+	Address Address
+}
+
+type Address struct {
+	Address1 string
+	Address2 string
+	City     string
+	State    string
+	PostCode string
+	Country  string
+}
+
+type Link struct {
+	Href string
+}
+
+type SearchParams map[string]string
+
+func (p SearchParams) CreateQueryString() string {
+	paramString := "?"
+	for paramKey, paramValue := range p {
+		paramString += fmt.Sprintf("%s=%s&", paramKey, paramValue)
+	}
+	return paramString
+}
+
+func (p SearchParams) AddParam(key string, value string) {
+	p[key] = p[value]
+}
+
+func NewPetSearchParams() SearchParams {
+	return SearchParams{}
 }

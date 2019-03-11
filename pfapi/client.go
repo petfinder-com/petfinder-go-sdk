@@ -142,7 +142,7 @@ func (c Client) GetAnimalById(animalID string) (Animal, error) {
 
 //GetAnimals takes a key,value pair for query string parameters
 //It returns a hash of animals or error
-func (c Client) GetAnimals(params PetSearchParams) (AnimalResponse, error) {
+func (c Client) GetAnimals(params SearchParams) (AnimalResponse, error) {
 	paramString := params.CreateQueryString()
 	url := fmt.Sprintf("/animals%s", paramString)
 	body, err := c.sendGetRequest(url)
@@ -164,11 +164,12 @@ func (c Client) GetAnimals(params PetSearchParams) (AnimalResponse, error) {
 
 //GetOrganizations takes a key,value pair for query string parameters
 //It returns a hash of organizations or error
-func (c Client) GetOrganizations(params OrgParams) (OrganizationResponse, error) {
-	paramString := params.CreateQueryString()
+func (c Client) GetOrganizations() (OrganizationResponse, error) {
+	//paramString := params.CreateQueryString()
+	paramString := ""
 	url := fmt.Sprintf("/organizations%s", paramString)
 	body, err := c.sendGetRequest(url)
-
+	//fmt.Println(string(body))
 	var orgs OrganizationResponse
 	var message interface{}
 
@@ -176,7 +177,9 @@ func (c Client) GetOrganizations(params OrgParams) (OrganizationResponse, error)
 	if err != nil {
 		return OrganizationResponse{}, err
 	}
+
 	messageMap := message.(map[string]interface{})
+
 	err = mapstructure.Decode(messageMap, &orgs)
 	if err != nil {
 		return OrganizationResponse{}, err
