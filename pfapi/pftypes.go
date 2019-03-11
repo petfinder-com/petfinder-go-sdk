@@ -185,7 +185,7 @@ func (p SearchParams) CreateQueryString() string {
 }
 
 func (p SearchParams) AddParam(key string, value string) {
-	p[key] = p[value]
+	p[key] = value
 }
 
 func NewPetSearchParams() SearchParams {

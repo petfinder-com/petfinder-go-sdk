@@ -212,3 +212,14 @@ func TestAnimalTypeDecode(t *testing.T) {
 		t.Errorf("Animal type should have a self link of /v2/types/dog, got %v", animalType.Links.Self.Href)
 	}
 }
+
+func TestQueryStringBuilder(t *testing.T) {
+	myParams := NewPetSearchParams()
+	myParams.AddParam("type", "Dog")
+
+	expectedQueryString := "?type=Dog&"
+	queryString := myParams.CreateQueryString()
+	if expectedQueryString != queryString {
+		t.Errorf("Expected query string %v, got %v", expectedQueryString, queryString)
+	}
+}
