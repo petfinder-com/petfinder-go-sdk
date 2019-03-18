@@ -1,4 +1,4 @@
-module pf-api-sdk-go
+module github.com/petfinder-com/petfinder-go-sdk
 
 require (
 	github.com/buger/jsonparser v0.0.0-20181115193947-bf1c66bbce23

@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"pf-api-sdk-go/pfapi"
+
+	"github.com/petfinder-com/petfinder-go-sdk/pfapi"
 )
 
 var client *http.Client
