@@ -28,7 +28,7 @@ type AnimalResponse struct {
 
 type Animal struct {
 	ID             int
-	OrganizationID string
+	OrganizationID string `mapstructure:"organization_id"`
 	URL            string
 	Type           string
 	Species        string
