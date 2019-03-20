@@ -1,6 +1,7 @@
 # Petfinder.com API Client sdk for Golang
 
 [![CircleCI](https://circleci.com/gh/petfinder-com/petfinder-go-sdk/tree/master.svg?style=shield)](https://circleci.com/gh/petfinder-com/petfinder-go-sdk/tree/master)
+[![Coverage Status](https://coveralls.io/repos/github/petfinder-com/petfinder-go-sdk/badge.svg?branch=feature%2Fcoveralls)](https://coveralls.io/github/petfinder-com/petfinder-go-sdk?branch=feature%2Fcoveralls)
 
 [Uses Petfinder API v2.](https://www.petfinder.com/developers/v2/docs/)
 
