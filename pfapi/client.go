@@ -31,7 +31,12 @@ func url() string {
 }
 
 func (c Client) httpGet(url string) ([]byte, error) {
-	response, err := c.Get(url)
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("User-Agent", "petfinder-go-sdk (https://github.com/petfinder-com/petfinder-go-sdk)")
+	response, err := c.Do(req)
 	if err != nil {
 		return nil, err
 	}
